@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <main style="max-width: 420px; margin: 60px auto; padding: 0 20px; font-family: Arial, sans-serif;">
+        <h1 style="margin-bottom: 16px;">Login</h1>
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
-        </div>
-    {% endif %}
+        {% if error %}
+            <p style="color: #b00020; margin-bottom: 12px;">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </p>
+        {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        {% if app.user %}
+            <p style="margin-bottom: 12px;">
+                You are logged in as {{ app.user.userIdentifier }}.
+                <a href="{{ logout_path() }}">Logout</a>
+            </p>
+        {% endif %}
 
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Remember me
-        </label>
-    </div>
+        <form method="post">
+            <label for="inputEmail">Email</label><br>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" autocomplete="email" required autofocus style="width: 100%; margin: 6px 0 12px 0; padding: 8px;">
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+            <label for="inputPassword">Password</label><br>
+            <input type="password" name="password" id="inputPassword" autocomplete="current-password" required style="width: 100%; margin: 6px 0 12px 0; padding: 8px;">
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" style="padding: 8px 14px;">Sign in</button>
+        </form>
+    </main>
 {% endblock %}
