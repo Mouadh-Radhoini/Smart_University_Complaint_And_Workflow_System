@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Complaint;
+use App\Entity\UserEmailNo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,30 @@ class ComplaintRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Complaint::class);
+    }
+
+    /**
+     * @return Complaint[]
+     */
+    public function findByUser(UserEmailNo $user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.createdBy = :user')
+            ->setParameter('user', $user)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Complaint[]
+     */
+    public function findAllOrderedByCreatedAtDesc(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

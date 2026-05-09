@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Complaint{% endblock %}
+
+{% block body %}
+    <h1>Submit a Complaint</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        <button type="submit">Submit Complaint</button>
+    {{ form_end(form) }}
+{% endblock %}
+

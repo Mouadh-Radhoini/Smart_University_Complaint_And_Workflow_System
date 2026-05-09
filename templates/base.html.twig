@@ -19,6 +19,40 @@
         {% endif %}
     </head>
     <body>
+        <header style="padding: 12px 16px; border-bottom: 1px solid #ddd;">
+            <nav style="display: flex; gap: 12px; align-items: center;">
+                <a href="{{ path('app_home') }}">Home</a>
+                {% if app.user %}
+                    <a href="{{ path('complaint_index') }}">Complaints</a>
+                    <a href="{{ path('complaint_new') }}">New Complaint</a>
+                    <span style="margin-left: auto;">
+                        {{ app.user.fullName ?? app.user.userIdentifier }}
+                    </span>
+                    <a href="{{ path('app_logout') }}">Logout</a>
+                {% else %}
+                    <span style="margin-left: auto;"></span>
+                    <a href="{{ path('app_login') }}">Login</a>
+                    <a href="{{ path('app_register') }}">Register</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main style="padding: 16px;">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div style="padding: 10px 12px; margin: 0 0 10px; border: 1px solid #ddd;">
+                        <strong>{{ label|title }}:</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <style>
+                table { width: 100%; border-collapse: collapse; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background: #f6f6f6; }
+                input, textarea, select { width: 100%; max-width: 600px; }
+                button { padding: 6px 10px; margin-top: 8px; }
+            </style>
         {% block body %}{% endblock %}
+        </main>
     </body>
 </html>

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Complaints{% endblock %}
+
+{% block body %}
+    <h1>Complaints</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Created By</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.id }}</td>
+                <td>{{ complaint.title }}</td>
+                <td>{{ complaint.status }}</td>
+                <td>
+                    {% if complaint.createdBy %}
+                        {{ complaint.createdBy.fullName }} ({{ complaint.createdBy.email }})
+                    {% endif %}
+                </td>
+                <td>{{ complaint.createdAt ? complaint.createdAt|date('Y-m-d H:i') : '' }}</td>
+                <td>
+                    <a href="{{ path('complaint_show', {id: complaint.id}) }}">View</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No complaints found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

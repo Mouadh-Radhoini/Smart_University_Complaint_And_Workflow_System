@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserEmailNoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,17 @@ class UserEmailNo implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Complaint>
+     */
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Complaint::class, orphanRemoval: true)]
+    private Collection $complaints;
+
+    public function __construct()
+    {
+        $this->complaints = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +134,14 @@ class UserEmailNo implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    /**
+     * @return Collection<int, Complaint>
+     */
+    public function getComplaints(): Collection
+    {
+        return $this->complaints;
     }
 
     #[\Deprecated]
